@@ -19,15 +19,15 @@ Xcode 26 on the machine.
 
 - `marsdawn export doc.md -o doc.pdf` renders Markdown to PDF on its own. It needs nothing else
   installed: the same renderer the app uses lives in the open-source package.
-- `marsdawn open doc.md:120` opens a document in the MarsDawn app and lands on line 120. That one
-  needs the app.
+- `marsdawn open doc.md` opens a document in the MarsDawn app. That one needs the app.
+  `marsdawn open doc.md:120` also passes line 120 along. The current app opens the document but
+  doesn't jump to the line yet; that comes in a later app update.
 
 ## Why there is no cask
 
-The MarsDawn app ships only through the Mac App Store, and
-[Homebrew Cask doesn't accept](https://docs.brew.sh/Acceptable-Casks) an app whose full version is
-distributed that way. So this tap carries the command-line tool only, and the app stays on the
-store.
+The MarsDawn app ships only through the Mac App Store and has no direct download, so there is
+nothing a cask could install (see Homebrew's [Acceptable Casks](https://docs.brew.sh/Acceptable-Casks)).
+This tap carries the command-line tool only, and the app stays on the store.
 
 ## Requirements
 
