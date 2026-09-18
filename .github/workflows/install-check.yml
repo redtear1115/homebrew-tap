@@ -1,0 +1,48 @@
+name: Install check
+
+# Installs marsdawn from this tap the way a user does and exports a real PDF, which `brew test`
+# can't do inside its sandbox (issue #2). Runs weekly as well, so a change to the runner image
+# can't break installs without anyone noticing.
+on:
+  pull_request:
+  schedule:
+    - cron: "17 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    runs-on: macos-26
+    timeout-minutes: 45
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+      HOMEBREW_NO_INSTALL_CLEANUP: "1"
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Tap this checkout
+        run: |
+          # A pull request checkout is a detached HEAD; give it a branch so `brew tap` clones
+          # exactly this commit.
+          git switch -c install-check
+          brew tap redtear1115/tap "$GITHUB_WORKSPACE"
+
+      - name: Show the toolchain
+        run: |
+          sw_vers
+          xcode-select -p
+          swift --version
+
+      - name: Install from source
+        run: brew install --build-from-source --verbose redtear1115/tap/marsdawn
+
+      - name: brew test
+        run: brew test --verbose redtear1115/tap/marsdawn
+
+      - name: brew audit
+        run: brew audit --strict --online redtear1115/tap/marsdawn
+
+      - name: Export a real document
+        run: .github/scripts/export-check.sh
