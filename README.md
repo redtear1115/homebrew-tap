@@ -35,3 +35,18 @@ This tap carries the command-line tool only, and the app stays on the store.
 |---|---|
 | `marsdawn` (this tap) | macOS 15 or later, and Xcode 26 to build it |
 | MarsDawn (the app) | macOS 26, from the Mac App Store |
+
+## Install check
+
+[`install-check.yml`](.github/workflows/install-check.yml) installs `marsdawn` from this tap on a
+macOS runner and exports a real PDF. `brew test` can't do that inside Homebrew's sandbox (#2). It
+runs on every pull request, weekly, and on demand.
+
+GitHub turns off scheduled workflows in a public repository after 60 days without activity, so the
+weekly run stops on its own if the tap is quiet for two months. Check it on every release:
+
+```sh
+gh workflow list --all --repo redtear1115/homebrew-tap               # "disabled_inactivity" means it stopped
+gh workflow enable install-check.yml --repo redtear1115/homebrew-tap  # turns it back on
+gh workflow run install-check.yml --repo redtear1115/homebrew-tap     # runs it now
+```
