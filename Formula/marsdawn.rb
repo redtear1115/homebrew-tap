@@ -11,7 +11,10 @@ class Marsdawn < Formula
 
   def install
     system "swift", "build", "--disable-sandbox", "-c", "release", "--product", "marsdawn"
-    bin.install ".build/release/marsdawn"
+    # SwiftPM finds the renderer's resources (preview page, KaTeX, Mermaid) in bundles next to
+    # the executable, so they are installed together and bin gets a symlink.
+    libexec.install ".build/release/marsdawn", *Dir[".build/release/*.bundle"]
+    bin.install_symlink libexec/"marsdawn"
     generate_completions_from_executable(bin/"marsdawn", "--generate-completion-script")
   end
 
