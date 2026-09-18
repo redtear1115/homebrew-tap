@@ -16,7 +16,8 @@ class Marsdawn < Formula
     # gets a script that execs the real binary in libexec, where the bundles are.
     libexec.install ".build/release/marsdawn", *Dir[".build/release/*.bundle"]
     bin.write_exec_script libexec/"marsdawn"
-    generate_completions_from_executable(bin/"marsdawn", "--generate-completion-script")
+    # The exec script only becomes executable once the install finishes, so ask the binary itself.
+    generate_completions_from_executable(libexec/"marsdawn", "--generate-completion-script")
   end
 
   def caveats
