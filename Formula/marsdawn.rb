@@ -36,12 +36,15 @@ class Marsdawn < Formula
       - two
     MARKDOWN
 
+    # The renderer keeps its compiled content-blocking rules under ~/Library/WebKit. The test
+    # sandbox denies reads of the real home folder, so point the store at the test folder.
+    ENV["CFFIXED_USER_HOME"] = testpath
     output = shell_output("#{bin}/marsdawn export doc.md -o out.pdf --json")
     result = JSON.parse(output)
     assert_equal true, result["ok"]
     assert_operator result["pages"].to_i, :>=, 1
 
-    assert_predicate testpath/"out.pdf", :exist?
+    assert_path_exists testpath/"out.pdf"
     assert_operator (testpath/"out.pdf").size, :>, 1_000
     assert_equal "%PDF-", (testpath/"out.pdf").read(5)
 
