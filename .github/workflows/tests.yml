@@ -25,6 +25,8 @@ jobs:
       checks: read
       contents: read
       pull-requests: read
+    outputs:
+      formula_changed: ${{ steps.formula-changed.outputs.changed }}
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
@@ -53,8 +55,31 @@ jobs:
 
       - run: brew test-bot --only-tap-syntax
 
+      # pour-check needs to know whether it has anything to check. Key this on the PR's changed
+      # files, not on whether a bottle got built below — a formula change that fails to produce a
+      # bottle must still fail pour-check loudly, not skip it.
+      - name: Check whether this PR changes a formula
+        id: formula-changed
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" --paginate --jq '.[].filename' | grep -q '^Formula/'; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - run: brew test-bot --only-formulae
         if: github.event_name == 'pull_request'
+
+      - name: A formula changed but --only-formulae produced no bottle
+        if: github.event_name == 'pull_request' && steps.formula-changed.outputs.changed == 'true'
+        run: |
+          if ! ls -- *.bottle.* >/dev/null 2>&1; then
+            echo "Formula/ changed but --only-formulae produced no bottle; pour-check would have nothing to check." >&2
+            exit 1
+          fi
 
       - name: Upload bottles as artifact
         if: always() && github.event_name == 'pull_request'
@@ -71,8 +96,13 @@ jobs:
     #   there, we add a second bottle rather than argue. This installs the bottle *file*, so it
     #   proves the binary runs on 26; that brew *selects* this bottle on 26 from the release is
     #   release-pour-check's job, after publishing.
+    #
+    # Skipped when the PR changes no formula: test-bot then builds no bottle, and there's nothing
+    # for this job to pour. Gated on the PR's changed files (test-bot's formula_changed output),
+    # not on whether a bottle exists — a formula change that fails to produce one still fails
+    # test-bot's own check above, loudly, instead of quietly skipping this job.
     needs: test-bot
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && needs.test-bot.outputs.formula_changed == 'true'
     strategy:
       fail-fast: false
       matrix:
