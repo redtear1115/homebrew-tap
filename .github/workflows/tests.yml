@@ -118,7 +118,7 @@ jobs:
 
       - name: It reports the version it was released as
         run: |
-          expected="$(brew info --json=v2 redtear1115/tap/marsdawn | ruby -rjson -e 'puts JSON.parse($stdin.read)["formulae"][0]["versions"]["stable"]')"
+          expected="$(brew info --json=v2 redtear1115/tap/marsdawn | ruby -rjson -e 'puts JSON.parse(STDIN.read)["formulae"][0]["versions"]["stable"]')"
           actual="$(marsdawn --version)"
           echo "formula: $expected  marsdawn --version: $actual"
           [ "$actual" = "$expected" ]
