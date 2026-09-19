@@ -14,8 +14,9 @@ workflows that build, install-check and publish them. It's the right place for p
 
 ## The formula's version isn't hand-edited here
 
-`Formula/marsdawn.rb`'s `url` and `sha256` track a tagged release of mars-dawn-kit, and the bottle
-comes from that repo's release build via `publish.yml` (`brew pr-pull`). A version bump is a
+`Formula/marsdawn.rb`'s `url` and `sha256` track a tagged release of mars-dawn-kit. The bottle is
+built here: `tests.yml` builds it with `brew test-bot` on the version-bump PR, and `publish.yml`
+(`brew pr-pull`) attaches it to a release on this tap and commits the `bottle do` block. A version bump is a
 release event, not something to send as an unprompted PR against a version that isn't out yet.
 
 ## Build and test locally
