@@ -8,8 +8,8 @@ set -euo pipefail
 
 log="$1"
 
-if ! grep -q 'Pouring marsdawn--' "$log"; then
-  echo "No 'Pouring marsdawn--' line: the bottle was not poured." >&2
+if ! grep -q 'Pouring marsdawn' "$log"; then
+  echo "No 'Pouring marsdawn' line: the bottle was not poured." >&2
   exit 1
 fi
 
@@ -19,4 +19,4 @@ if grep -Eqi 'swift build|from source' "$log"; then
   exit 1
 fi
 
-echo "Poured, and nothing was built: $(grep -m1 'Pouring marsdawn--' "$log")"
+echo "Poured, and nothing was built: $(grep -m1 'Pouring marsdawn' "$log")"
