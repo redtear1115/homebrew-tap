@@ -4,6 +4,8 @@ This is the Homebrew tap for the `marsdawn` command-line tool: the formula, its 
 workflows that build, install-check and publish them. It's the right place for problems installing
 `marsdawn` through Homebrew, or with the formula itself.
 
+This project follows the [Code of Conduct](CODE_OF_CONDUCT.md).
+
 ## What goes elsewhere
 
 - Anything about what `marsdawn` actually does — rendering, PDF export, CLI behaviour, bugs in the
