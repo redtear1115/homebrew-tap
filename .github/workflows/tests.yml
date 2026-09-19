@@ -135,6 +135,9 @@ jobs:
             end
           ' "$PWD/bottles" "$serve"
           ls -l "$serve"
+          # Homebrew 7 trusts a formula you install by name, but `brew bottle` refuses to load one
+          # from an untrusted tap. Trust this one formula, not the whole tap.
+          brew trust --formula redtear1115/tap/marsdawn
           # Relative names, as `brew pr-pull` passes them, so nothing here looks like a tap path.
           (cd bottles && brew bottle --merge --write --no-commit ./*.bottle.json)
           sed -n '/bottle do/,/^  end/p' "$(brew --repository redtear1115/tap)/Formula/marsdawn.rb"
