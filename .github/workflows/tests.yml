@@ -110,8 +110,10 @@ jobs:
           git switch -c pour-check
           brew tap redtear1115/tap "$GITHUB_WORKSPACE"
 
+      # An absolute path: given `bottles/marsdawn--….bottle.tar.gz`, brew looked for a formula of
+      # that name instead of reading the file.
       - name: Pour the bottle
-        run: brew install --verbose bottles/marsdawn--*.bottle.tar.gz 2>&1 | tee install.log
+        run: brew install --verbose "$PWD"/bottles/marsdawn--*.bottle.tar.gz 2>&1 | tee install.log
 
       - name: It poured, and nothing was built
         run: .github/scripts/assert-poured.sh install.log
