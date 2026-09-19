@@ -58,13 +58,43 @@ jobs:
       # pour-check needs to know whether it has anything to check. Key this on the PR's changed
       # files, not on whether a bottle got built below — a formula change that fails to produce a
       # bottle must still fail pour-check loudly, not skip it.
+      # gh isn't installed on this runner image, and even where it is, piping its output into
+      # `grep -q` under `pipefail` is a race: grep can exit as soon as it finds a match, sending gh
+      # a SIGPIPE that pipefail then reports as the pipeline having failed. So this fetches the
+      # PR's files with curl and writes them to a plain file, and greps the file, not a pipe. It
+      # also isn't wrapped in an `if` — a curl or parse failure has to fail the step outright, not
+      # get swallowed and read as "no formula changed".
       - name: Check whether this PR changes a formula
         id: formula-changed
         if: github.event_name == 'pull_request'
         env:
           GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          if gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" --paginate --jq '.[].filename' | grep -q '^Formula/'; then
+          files_list="$RUNNER_TEMP/pr-files.txt"
+          : > "$files_list"
+          page=1
+          while true; do
+            response="$(curl -fsSL \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/files?per_page=100&page=$page")"
+            count="$(ruby -rjson -e '
+              path = ARGV[0]
+              data = JSON.parse(STDIN.read)
+              File.open(path, "a") { |f| data.each { |entry| f.puts entry.fetch("filename") } }
+              puts data.length
+            ' "$files_list" <<<"$response")"
+            if [ "$count" -lt 100 ]; then
+              break
+            fi
+            page=$((page + 1))
+          done
+          echo "PR #$PR_NUMBER changed files:"
+          cat "$files_list"
+          if grep -q '^Formula/' "$files_list"; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
