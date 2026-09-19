@@ -1,0 +1,49 @@
+# Installs marsdawn the way a user does — plain `brew install`, no flags, nothing selected — and
+# asserts it came from the published bottle. This is the check the pull request can't make: before
+# publishing there is no release URL, so pour-check can only pour the bottle *file*. Run it right
+# after publishing, and weekly, so a bottle that stops pouring is noticed.
+name: Release pour check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "41 3 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  pour:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-15, macos-26]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+      HOMEBREW_NO_INSTALL_CLEANUP: "1"
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Show the runner
+        run: |
+          sw_vers
+          xcode-select -p
+
+      - name: This runner must not be able to build the formula
+        if: matrix.os == 'macos-15'
+        run: .github/scripts/assert-xcode-not-26.sh
+
+      - name: Install from the published tap, as a user would
+        run: brew install --verbose redtear1115/tap/marsdawn 2>&1 | tee install.log
+
+      - name: It poured the published bottle, and nothing was built
+        run: .github/scripts/assert-poured.sh install.log
+
+      - run: brew test --verbose redtear1115/tap/marsdawn
+
+      - name: Export a real document and read its text back
+        run: .github/scripts/export-check.sh

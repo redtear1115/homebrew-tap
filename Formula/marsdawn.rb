@@ -4,6 +4,7 @@ class Marsdawn < Formula
   url "https://github.com/redtear1115/mars-dawn-kit/archive/refs/tags/0.4.1.tar.gz"
   sha256 "e237502e0d4871d588b92ea91949079f75f29fbb71cfc5459ab1f6153a975fb3"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/redtear1115/mars-dawn-kit.git", branch: "main"
 
   depends_on xcode: ["26.0", :build]
