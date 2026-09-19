@@ -1,8 +1,8 @@
 class Marsdawn < Formula
-  desc "Render Markdown to PDF, and open documents in MarsDawn"
+  desc "Command-line Markdown to PDF renderer"
   homepage "https://marsdawn.southern-light.dev"
-  url "https://github.com/redtear1115/mars-dawn-kit/archive/refs/tags/0.3.0.tar.gz"
-  sha256 "2c6155611a21304cd994e5bb3b7c0d4c34e201d99f647296e7a61412751bef10"
+  url "https://github.com/redtear1115/mars-dawn-kit/archive/refs/tags/0.4.1.tar.gz"
+  sha256 "e237502e0d4871d588b92ea91949079f75f29fbb71cfc5459ab1f6153a975fb3"
   license "Apache-2.0"
   head "https://github.com/redtear1115/mars-dawn-kit.git", branch: "main"
 
@@ -23,8 +23,8 @@ class Marsdawn < Formula
   def caveats
     <<~EOS
       `marsdawn export` renders on its own and needs nothing else installed.
-      `marsdawn open` hands documents to the MarsDawn app, which ships through
-      the Mac App Store and needs macOS 26.
+      `marsdawn open` hands documents to the MarsDawn app, which isn't on the
+      Mac App Store yet. When it is, it will need macOS 26.
     EOS
   end
 
