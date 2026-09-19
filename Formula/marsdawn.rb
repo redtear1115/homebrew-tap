@@ -1,5 +1,5 @@
 class Marsdawn < Formula
-  desc "Render Markdown to PDF from the command line"
+  desc "Command-line Markdown to PDF renderer"
   homepage "https://marsdawn.southern-light.dev"
   url "https://github.com/redtear1115/mars-dawn-kit/archive/refs/tags/0.4.1.tar.gz"
   sha256 "e237502e0d4871d588b92ea91949079f75f29fbb71cfc5459ab1f6153a975fb3"
