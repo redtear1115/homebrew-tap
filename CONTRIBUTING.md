@@ -38,4 +38,5 @@ pouring the built bottle on runners that can't build it.
 
 Keep pull requests small and focused — most changes here touch the formula, a workflow, or one of
 the `.github/scripts/` helpers, not several at once. Describe what changed and why. CI (`test-bot`,
-`pour-check`, `refuses-without-xcode-26`, and `install-check` on pull requests) has to be green.
+`refuses-without-xcode-26`, and `install-check` on pull requests) has to be green; `pour-check` runs
+only on pull requests that change a formula, and is skipped otherwise.
