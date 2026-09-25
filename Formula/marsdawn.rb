@@ -1,8 +1,8 @@
 class Marsdawn < Formula
   desc "Command-line Markdown to PDF renderer"
   homepage "https://marsdawn.southern-light.dev"
-  url "https://github.com/redtear1115/mars-dawn-kit/archive/refs/tags/0.5.3.tar.gz"
-  sha256 "79c77b9c8f6733628c8b3c9634f44109d8ec0d233f16b6720fe3aa7c410948c9"
+  url "https://github.com/redtear1115/mars-dawn-kit/archive/refs/tags/0.5.4.tar.gz"
+  sha256 "d1c554b4a008427b174cbdac5f10a116f94d2016adb279e4e41467063f648ca8"
   license "Apache-2.0"
   head "https://github.com/redtear1115/mars-dawn-kit.git", branch: "main"
 
@@ -30,6 +30,8 @@ class Marsdawn < Formula
       `marsdawn export` renders on its own and needs nothing else installed.
       `marsdawn open` hands documents to the MarsDawn app, which isn't on the
       Mac App Store yet. When it is, it will need macOS 26.
+      Agents: run `marsdawn skill --install` to write the matching skill to
+      ~/.claude/skills/marsdawn/SKILL.md.
     EOS
   end
 
