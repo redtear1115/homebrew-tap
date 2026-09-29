@@ -22,6 +22,9 @@ Xcode 26 on the machine.
 - `marsdawn open doc.md` opens a document in the MarsDawn app. That one needs the app.
   `marsdawn open doc.md:120` also passes line 120 along. The current app opens the document but
   doesn't jump to the line yet; that comes in a later app update.
+- `marsdawn theme validate|css|preview <file>` checks a `theme.json` against the rules a MarsDawn
+  theme must meet, prints the CSS the preview serves for it, or renders a sample page with it to a
+  PNG. Details are in the [kit README](https://github.com/redtear1115/mars-dawn-kit#readme).
 
 ## Why there is no cask
 
