@@ -7,8 +7,8 @@ class Marsdawn < Formula
   head "https://github.com/redtear1115/mars-dawn-kit.git", branch: "main"
 
   bottle do
-    root_url "https://github.com/redtear1115/homebrew-tap/releases/download/marsdawn-0.6.2"
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "64bf679e4065cb0576ecdfd3471b84050319c0bff494faf31ee4ee6cb573bfa9"
+    root_url "https://github.com/redtear1115/homebrew-tap/releases/download/marsdawn-0.6.3"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "677f804d98f30c0f5d382f4dc3967a1ac4f0f90f7864e09c5b776681bcb6fdaf"
   end
 
   depends_on xcode: ["26.0", :build]
