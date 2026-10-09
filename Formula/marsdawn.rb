@@ -28,8 +28,8 @@ class Marsdawn < Formula
   def caveats
     <<~EOS
       `marsdawn export` renders on its own and needs nothing else installed.
-      `marsdawn open` hands documents to the MarsDawn app, which isn't on the
-      Mac App Store yet. When it is, it will need macOS 26.
+      `marsdawn open` hands documents to the MarsDawn app (macOS 26 or later),
+      from the Mac App Store: https://apps.apple.com/app/id6812925073
       Agents: run `marsdawn skill --install` to write the matching skill to
       ~/.claude/skills/marsdawn/SKILL.md.
     EOS
