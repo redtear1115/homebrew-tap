@@ -1,8 +1,8 @@
 class Marsdawn < Formula
   desc "Command-line Markdown to PDF renderer"
   homepage "https://marsdawn.southern-light.dev"
-  url "https://github.com/redtear1115/mars-dawn-kit/archive/refs/tags/0.6.4.tar.gz"
-  sha256 "edd61e9922b76ad935a55109e173b79bcd4bfef9a311a96d9294b3dacac20f12"
+  url "https://github.com/redtear1115/mars-dawn-kit/archive/refs/tags/0.7.0.tar.gz"
+  sha256 "9779f4aacec3dc65c987258c370b1fb84edbeafcfc0c0c49427dce62b260d20b"
   license "Apache-2.0"
   head "https://github.com/redtear1115/mars-dawn-kit.git", branch: "main"
 
