@@ -6,6 +6,12 @@ class Marsdawn < Formula
   license "Apache-2.0"
   head "https://github.com/redtear1115/mars-dawn-kit.git", branch: "main"
 
+  bottle do
+    root_url "https://github.com/redtear1115/homebrew-tap/releases/download/marsdawn-0.7.7"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6cd1a5fafcd44ee732f76d83e0f9c8d568ebbbc6eec516a361f3770e2703a9ab"
+  end
+
   depends_on xcode: ["26.0", :build]
   depends_on macos: :sequoia
 
